@@ -27,37 +27,40 @@ const Home: FunctionComponent = () => {
       </Head>
       <div className="mx-4">
         <MetaMaskConnector />
-        {contract && !tokenAddress
-          ? (<>
-            <div className="my-4">
-              <InputAddress
-                onSubmit={updateTokenAddress} />
-            </div>
-          </>)
-          : null
-        }
-        {tokenAddress
-          ? (<>
-            <hr />
-            <div className="block md:flex md:justify-between">
-              <div className="truncate max-w-auto">Selected token: <strong>{tokenAddress}</strong></div>
-              <div
-                className="text-green-500 hover:text-green-300 cursor-pointer"
-                onClick={resetTokenAddress}>
-                Select another token
+        {contract && <>
+          {!tokenAddress
+            ? (<>
+              <div className="my-4">
+                <InputAddress
+                  onSubmit={updateTokenAddress} />
               </div>
-            </div>
-            <div>
-              <TokenBalance />
-            </div>
-            <div className="my-4">
-              <DepositToken />
-            </div>
-            <div>
-              <DepositHistory />
-            </div>
-          </>)
-          : null}
+            </>)
+            : null
+          }
+          {tokenAddress
+            ? (<>
+              <hr />
+              <div className="block md:flex md:justify-between">
+                <div className="truncate max-w-auto">Selected token: <strong>{tokenAddress}</strong></div>
+                <div
+                  className="text-green-500 hover:text-green-300 cursor-pointer"
+                  onClick={resetTokenAddress}>
+                  Select another token
+                </div>
+              </div>
+              <div>
+                <TokenBalance />
+              </div>
+              <div className="my-4">
+                <DepositToken />
+              </div>
+              <div>
+                <DepositHistory />
+              </div>
+            </>)
+            : null}
+        </>
+        }
       </div>
     </>
   );
