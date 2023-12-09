@@ -54,7 +54,7 @@ contract DepositContract {
 
 ## Online Demo
 
-<https://main--lucent-croquembouche-bb774e.netlify.app> or <http://173.249.46.71:3000>
+<https://web3-schengatto.netlify.app> or <http://173.249.46.71:3000>
 
 ## Run with docker-compose
 
