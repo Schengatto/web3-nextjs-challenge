@@ -69,7 +69,7 @@ const DepositToken: FunctionComponent = () => {
                     type="number"
                     min="1"
                     max={tokenBalance}
-                    placeholder={`from 1 to ${tokenBalance}`}
+                    placeholder={`from 1 to ${getTokenBalanceFixed()}`}
                     onChange={updateDepositAmount} />
                 <button
                     className="bg-green-600 hover:bg-green-400 text-white font-medium py-2 px-4 disabled:opacity-75"
