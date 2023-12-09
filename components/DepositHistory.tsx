@@ -10,15 +10,27 @@ interface DepositEvent {
 }
 
 const DepositHistory: FunctionComponent = () => {
-    const { contract, accountAddress, tokenAddress, lastTransactionTime } = useAppStore();
+    const {
+        contract,
+        accountAddress,
+        tokenAddress,
+        lastTransactionTime,
+        selectedToken
+    } = useAppStore();
 
     const [deposits, setDeposits] = useState<DepositEvent[]>([]);
     const [totalDeposit, setTotalDeposit] = useState<number>(0);
 
     useEffect(() => {
-        if (!contract || !accountAddress) return;
+        if (!contract || !accountAddress || !selectedToken) return;
 
-        const mapEvent = (event: any) => ({ amount: Number(event.returnValues.amount), depositor: event.returnValues.depositor, token: event.returnValues.token, transaction: event.transactionHash });
+        const mapEvent = (event: any) => (
+            {
+                transaction: event.transactionHash,
+                depositor: event.returnValues.depositor,
+                token: event.returnValues.token,
+                amount: Number(event.returnValues.amount) / 10 ** selectedToken.decimals
+            });
 
         const getAccountTokenDeposits = async () => {
             const filter = { depositor: accountAddress, token: tokenAddress };
@@ -31,7 +43,7 @@ const DepositHistory: FunctionComponent = () => {
         }
 
         getAccountTokenDeposits();
-    }, [contract, accountAddress, lastTransactionTime]);
+    }, [contract, accountAddress, selectedToken, lastTransactionTime]);
 
     return (
         <div className="overflow-x-auto">

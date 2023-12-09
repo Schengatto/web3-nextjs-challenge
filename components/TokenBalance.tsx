@@ -4,28 +4,33 @@ import { EXAMPLE_TOKEN_ADDRESS, IERC20_TOKEN_CONTRACT_ABI } from "@/configuratio
 
 const TokenBalance: FunctionComponent = () => {
     const {
-        tokenBalance,
+        getTokenBalanceFixed,
+        getAmountOfSelectedToken,
         setTokenBalance,
         tokenAddress,
         accountAddress,
         web3,
         lastTransactionTime,
-        setLastTransactionTime
+        setLastTransactionTime,
+        selectedToken,
+        setSelectedToken,
     } = useAppStore();
 
     const [isExampleToken, setIsExampleToken] = useState<boolean>(false);
-    const [tokenSymbol, setTokenSymbol] = useState<string>("");
 
     useEffect(() => {
         const getTokenBalance = async () => {
             if (!accountAddress) return;
 
             const tokenContract = await new web3!.eth.Contract<typeof IERC20_TOKEN_CONTRACT_ABI>(IERC20_TOKEN_CONTRACT_ABI, tokenAddress);
-            const balance = await tokenContract.methods.balanceOf(accountAddress).call({ from: accountAddress! });
-            setTokenBalance(Number(balance));
 
-            const symbol = await tokenContract.methods.symbol().call({ from: accountAddress! });
-            setTokenSymbol(symbol);
+            const [balance, decimals, symbol] = await Promise.all([
+                tokenContract.methods.balanceOf(accountAddress).call({ from: accountAddress! }),
+                tokenContract.methods.decimals().call({ from: accountAddress! }),
+                tokenContract.methods.symbol().call({ from: accountAddress! })
+            ]);
+            setTokenBalance(Number(balance));
+            setSelectedToken({ address: tokenAddress, symbol: symbol, decimals: Number(decimals) });
         }
         setIsExampleToken(tokenAddress === EXAMPLE_TOKEN_ADDRESS);
         getTokenBalance();
@@ -33,8 +38,9 @@ const TokenBalance: FunctionComponent = () => {
 
     const getMoreExampleTokens = async () => {
         try {
+            const _amount = getAmountOfSelectedToken(100);
             const testTokenContract = await new web3!.eth.Contract<typeof IERC20_TOKEN_CONTRACT_ABI>(IERC20_TOKEN_CONTRACT_ABI, EXAMPLE_TOKEN_ADDRESS);
-            await testTokenContract.methods.mint(100).send({ from: accountAddress! });
+            await testTokenContract.methods.mint(_amount).send({ from: accountAddress! });
             setLastTransactionTime(Date.now());
         } catch (error: any) {
             alert(error.message);
@@ -45,7 +51,7 @@ const TokenBalance: FunctionComponent = () => {
         <>
             {web3
                 ? (<div className="md:flex md:justify-between">
-                    <div className="text-white-500">Your token balance is <b>{tokenBalance}</b> {tokenSymbol}.</div>
+                    <div className="text-white-500">Your token balance is <b>{getTokenBalanceFixed()}</b> {selectedToken?.symbol}.</div>
                     {isExampleToken
                         && <div
                             className="text-green-500 hover:text-green-300 cursor-pointer"

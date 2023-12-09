@@ -10,7 +10,9 @@ const DepositToken: FunctionComponent = () => {
         accountAddress,
         web3,
         tokenBalance,
-        setLastTransactionTime
+        getTokenBalanceFixed,
+        setLastTransactionTime,
+        getAmountOfSelectedToken,
     } = useAppStore();
 
     const [amount, setAmount] = useState<number>(0);
@@ -20,7 +22,7 @@ const DepositToken: FunctionComponent = () => {
     useEffect(() => {
         const isValid = !!amount && amount >= 1 && amount <= tokenBalance;
         setIsValidAmount(() => isValid);
-        setError(!isValid ? `The amount value must be between 1 and ${tokenBalance}` : null);
+        setError(!isValid ? `The amount value must be between 1 and ${getTokenBalanceFixed()}` : null);
     }, [amount, tokenBalance])
 
     const updateDepositAmount = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -28,10 +30,10 @@ const DepositToken: FunctionComponent = () => {
     };
 
     const approve = async () => {
+        const _amount = getAmountOfSelectedToken(amount);
         const tokenContract = await new web3!.eth.Contract<typeof IERC20_TOKEN_CONTRACT_ABI>(IERC20_TOKEN_CONTRACT_ABI, tokenAddress);
-        await tokenContract.methods.approve(SMART_CONTRACT_ADDRESS, amount).send({ from: accountAddress! });
+        await tokenContract.methods.approve(SMART_CONTRACT_ADDRESS, _amount).send({ from: accountAddress! });
     }
-
 
     const handleDeposit = async () => {
         try {
@@ -39,7 +41,8 @@ const DepositToken: FunctionComponent = () => {
                 throw new Error(`The amount value must be between 1 and ${tokenBalance}`)
             }
             await approve();
-            await contract.methods.deposit(tokenAddress, amount).send({ from: accountAddress!, gas: 3000000 });
+            const _amount = getAmountOfSelectedToken(amount);
+            await contract.methods.deposit(tokenAddress, _amount).send({ from: accountAddress!, gas: 3000000 });
             setError(null);
             setLastTransactionTime(Date.now());
         } catch (error: any) {
