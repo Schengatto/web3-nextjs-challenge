@@ -1,5 +1,5 @@
 import { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
-import { SMART_CONTRACT_ADDRESS } from "@/configuration/contracts";
+import { IERC20_TOKEN_CONTRACT_ABI, SMART_CONTRACT_ADDRESS } from "@/configuration/contracts";
 import { useAppStore } from "@/store/app";
 
 const DepositToken: FunctionComponent = () => {
@@ -21,27 +21,14 @@ const DepositToken: FunctionComponent = () => {
         const isValid = !!amount && amount >= 1 && amount <= tokenBalance;
         setIsValidAmount(() => isValid);
         setError(!isValid ? `The amount value must be between 1 and ${tokenBalance}` : null);
-    }, [amount])
+    }, [amount, tokenBalance])
 
     const updateDepositAmount = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setAmount(() => Number(e.target.value));
     };
 
     const approve = async () => {
-        const erc20tokenAbi = [{
-            "constant": false,
-            "inputs": [
-                { "internalType": "address", "name": "spender", "type": "address" },
-                { "internalType": "uint256", "name": "amount", "type": "uint256" },
-            ],
-            "name": "approve",
-            "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function",
-        }] as const;
-
-        const tokenContract = await new web3!.eth.Contract<typeof erc20tokenAbi>(erc20tokenAbi, tokenAddress);
+        const tokenContract = await new web3!.eth.Contract<typeof IERC20_TOKEN_CONTRACT_ABI>(IERC20_TOKEN_CONTRACT_ABI, tokenAddress);
         await tokenContract.methods.approve(SMART_CONTRACT_ADDRESS, amount).send({ from: accountAddress! });
     }
 

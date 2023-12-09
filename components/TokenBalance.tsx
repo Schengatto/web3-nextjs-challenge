@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useAppStore } from "@/store/app";
-import { EXAMPLE_TOKEN_ADDRESS, EXAMPLE_TOKEN_CONTRACT_ABI } from "@/configuration/contracts";
+import { EXAMPLE_TOKEN_ADDRESS, IERC20_TOKEN_CONTRACT_ABI } from "@/configuration/contracts";
 
 const TokenBalance: FunctionComponent = () => {
     const {
@@ -14,34 +14,18 @@ const TokenBalance: FunctionComponent = () => {
     } = useAppStore();
 
     const [isExampleToken, setIsExampleToken] = useState<boolean>(false);
+    const [tokenSymbol, setTokenSymbol] = useState<string>("");
 
     useEffect(() => {
         const getTokenBalance = async () => {
             if (!accountAddress) return;
 
-            const erc20tokenAbi = [{
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "name": "balanceOf",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }] as const;
-
-            const tokenContract = await new web3!.eth.Contract<typeof erc20tokenAbi>(erc20tokenAbi, tokenAddress);
+            const tokenContract = await new web3!.eth.Contract<typeof IERC20_TOKEN_CONTRACT_ABI>(IERC20_TOKEN_CONTRACT_ABI, tokenAddress);
             const balance = await tokenContract.methods.balanceOf(accountAddress).call({ from: accountAddress! });
             setTokenBalance(Number(balance));
+
+            const symbol = await tokenContract.methods.symbol().call({ from: accountAddress! });
+            setTokenSymbol(symbol);
         }
         setIsExampleToken(tokenAddress === EXAMPLE_TOKEN_ADDRESS);
         getTokenBalance();
@@ -49,7 +33,7 @@ const TokenBalance: FunctionComponent = () => {
 
     const getMoreExampleTokens = async () => {
         try {
-            const testTokenContract = await new web3!.eth.Contract<typeof EXAMPLE_TOKEN_CONTRACT_ABI>(EXAMPLE_TOKEN_CONTRACT_ABI, EXAMPLE_TOKEN_ADDRESS);
+            const testTokenContract = await new web3!.eth.Contract<typeof IERC20_TOKEN_CONTRACT_ABI>(IERC20_TOKEN_CONTRACT_ABI, EXAMPLE_TOKEN_ADDRESS);
             await testTokenContract.methods.mint(100).send({ from: accountAddress! });
             setLastTransactionTime(Date.now());
         } catch (error: any) {
@@ -61,12 +45,12 @@ const TokenBalance: FunctionComponent = () => {
         <>
             {web3
                 ? (<div className="md:flex md:justify-between">
-                    <div className="text-white-500">Your token balance is <b>{tokenBalance}</b>.</div>
+                    <div className="text-white-500">Your token balance is <b>{tokenBalance}</b> {tokenSymbol}.</div>
                     {isExampleToken
                         && <div
                             className="text-green-500 hover:text-green-300 cursor-pointer"
                             onClick={getMoreExampleTokens}>
-                            Get more example tokens!
+                            Mint more tokens!
                         </div>}
                 </div>)
                 : null

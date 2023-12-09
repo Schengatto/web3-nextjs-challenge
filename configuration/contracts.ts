@@ -55,7 +55,7 @@ export const SMART_CONTRACT_ABI = [
 
 export const EXAMPLE_TOKEN_ADDRESS = "0x9982f9A3bA28c34aD03737745d956EC0668ea440";
 
-export const EXAMPLE_TOKEN_CONTRACT_ABI = [
+export const IERC20_TOKEN_CONTRACT_ABI = [
 	{
 		"anonymous": false,
 		"inputs": [
