@@ -1,5 +1,16 @@
 # Full-Stack Task
 
+- [Full-Stack Task](#full-stack-task)
+  - [Info](#info)
+    - [Example ERC20 Token](#example-erc20-token)
+  - [Requirements](#requirements)
+  - [GitHub Repository](#github-repository)
+  - [Online Demo](#online-demo)
+  - [Local environment](#local-environment)
+    - [Run with docker-compose](#run-with-docker-compose)
+    - [Run with node](#run-with-node)
+  - [E2E tests](#e2e-tests)
+
 ## Info
 
 This is a Next.js project that uses the library Web3 to interact with the MetaMask wallet and perform actions calling the smart contracts methods.
@@ -76,7 +87,7 @@ Open a terminal at the root path of this project and execute the following comma
 
 Once the server is up you can access the URL <http://localhost:3000> using your browser.
 
-## e2e tests
+## E2E tests
 
 In order to run the e2e tests you need to:
 
