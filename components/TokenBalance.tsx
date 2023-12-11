@@ -51,11 +51,12 @@ const TokenBalance: FunctionComponent = () => {
         <>
             {web3
                 ? (<div className="md:flex md:justify-between">
-                    <div className="text-white-500">Your token balance is <b>{getTokenBalanceFixed()}</b> {selectedToken?.symbol}.</div>
+                    <div className="text-white-500" data-test="TokenBalance__Div__balanceInfo">Your token balance is <b><span data-test="TokenBalance__Div__balanceAmount">{getTokenBalanceFixed()}</span></b> {selectedToken?.symbol}.</div>
                     {isExampleToken
                         && <div
                             className="text-green-500 hover:text-green-300 cursor-pointer"
-                            onClick={getMoreExampleTokens}>
+                            onClick={getMoreExampleTokens}
+                            data-test="TokenBalance__Div__getMoreExampleTokensAction">
                             Mint more tokens!
                         </div>}
                 </div>)

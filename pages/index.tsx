@@ -25,7 +25,7 @@ const Home: FunctionComponent = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mx-4">
+      <div className="mx-4" data-test="AppPage__Div__content">
         <MetaMaskConnector />
         {contract && <>
           {!tokenAddress

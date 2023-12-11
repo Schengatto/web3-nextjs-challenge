@@ -47,7 +47,9 @@ const DepositHistory: FunctionComponent = () => {
 
     return (
         <div className="overflow-x-auto">
-            <table className="w-full table-auto divide-y divide-gray-200 dark:divide-gray-700 border-separate border-spacing-2 border border-slate-500">
+            <table
+                className="w-full table-auto divide-y divide-gray-200 dark:divide-gray-700 border-separate border-spacing-2 border border-slate-500"
+                data-test="DepositHistory__Table__history">
                 <caption className="font-bold">ACCOUNT DEPOSIT HISTORY FOR CURRENT TOKEN</caption>
                 <thead className="bg-gray-100 dark:bg-gray-700">
                     <tr>

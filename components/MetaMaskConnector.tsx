@@ -99,7 +99,7 @@ const MetaMaskConnector: FunctionComponent = () => {
     }, [ethereum]);
 
     const errorMessage = (<>
-        <div className="text-center border-2 border-rose-500 p-2 bg-rose-700 mt-8">
+        <div className="text-center border-2 border-rose-500 p-2 bg-rose-700 mt-8" data-test="MetaMaskConnector__Div__error">
             <p> It seems like your MetaMask plugin is not present or the network chain is not already configured.</p>
             <p> Please, make sure to install <a className="underline underline-offset-4 text-green-400 hover:text-green-300" href="https://metamask.io/download/" target="_blank">Metamask plugin</a> for
                 your browser and then connect to <strong>Sepolia network</strong></p>
@@ -115,13 +115,14 @@ const MetaMaskConnector: FunctionComponent = () => {
                     <>
                         <button
                             className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
-                            onClick={connectMetaMask}>
+                            onClick={connectMetaMask}
+                            data-test="MetaMaskConnector__Button__connect">
                             Connect Metamask to Sepolia
                         </button>
                     </>
 
                 ) : null}
-                {accountAddress && <p className="text-white-700 truncate max-w-auto">Connected as: {accountAddress}</p>}
+                {accountAddress && <div className="text-white-700 truncate max-w-auto" data-test="MetaMaskConnector__Div__connect">Connected as: {accountAddress}</div>}
                 {error && errorMessage}
             </div>
         );

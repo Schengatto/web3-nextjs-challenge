@@ -56,7 +56,9 @@ contract DepositContract {
 
 <https://web3-schengatto.netlify.app> or <http://173.249.46.71:3000>
 
-## Run with docker-compose
+## Local environment
+
+### Run with docker-compose
 
 Open a terminal at the root path of this project and execute the following command:
 
@@ -64,7 +66,7 @@ Open a terminal at the root path of this project and execute the following comma
 
 Once the server is up you can access the URL <http://localhost:3000> using your browser.
 
-## Run with node
+### Run with node
 
 Open a terminal at the root path of this project and execute the following commands:
 
@@ -73,3 +75,29 @@ Open a terminal at the root path of this project and execute the following comma
 > npm run build && npm run start
 
 Once the server is up you can access the URL <http://localhost:3000> using your browser.
+
+## e2e tests
+
+In order to run the e2e tests you need to:
+
+  1. run the application in your [`local environment`](#local-environment)
+
+  2. access the folder `./e2e` and run the command:
+     > npm install
+
+  3. create the file .env.e2e inside the folder `./web3-nextjs-challenge/e2e` with the content (with a valid value for `SECRET_WORDS`)
+```
+NETWORK_NAME='Sepolia'
+CHAIN_ID=11155111
+RPC_URL='https://rpc.sepolia.org'
+SYMBOL="ETH"
+IS_TESTNET=true
+# The recovery phrase for the wallet that will be restored while preparing Metamask 
+# Will be the selected wallet by default when connecting to the dApp, make sure to use a wallet with at least 0.1 ethers for the Sepolia network
+SECRET_WORDS='your seed phrase'
+```
+
+  4. from the path `./web3-nextjs-challenge/e2e` run the following command:
+   > npm run e2e:synpress
+
+  5. Once the process ends you will be able to check the e2e tests report file at the path `./web3-nextjs-challenge/e2e/cypress/report/cucumber.html`.

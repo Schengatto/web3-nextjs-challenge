@@ -1,0 +1,38 @@
+{
+  "name": "synpress-web3-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "author": "schintu.enrico@gmail.com",
+  "dependencies": {
+    "env-cmd": "10.1.0",
+    "@badeball/cypress-cucumber-preprocessor": "17.2.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "2.2.0",
+    "@cucumber/cucumber": "9.1.2",
+    "@synthetixio/synpress": "3.7.2-beta.9",
+    "cypress": "12.17.4",
+    "has-bigints": "1.0.2",
+    "typescript": "5.1.3"
+  },
+  "scripts": {
+    "e2e:synpress": "env-cmd -f .env.e2e synpress run --configFile cypress.config.ts --headless",
+    "e2e:synpress:live": "env-cmd -f .env.e2e synpress run --configFile cypress.config.ts",
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
