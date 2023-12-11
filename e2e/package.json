@@ -15,7 +15,7 @@
   },
   "scripts": {
     "e2e:synpress": "env-cmd -f .env.e2e synpress run --configFile cypress.config.ts --headless",
-    "e2e:synpress:live": "env-cmd -f .env.e2e synpress run --configFile cypress.config.ts",
+    "e2e:synpress:live": "env-cmd -f .env.e2e synpress run --configFile cypress.config.ts"
   },
   "eslintConfig": {
     "extends": [
