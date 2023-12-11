@@ -52,7 +52,7 @@ const DepositToken: FunctionComponent = () => {
 
     if (tokenBalance === 0) {
         return (
-            <div className="text-rose-400">
+            <div className="text-rose-400" data-test="DepositToken__Div__error">
                 The deposit is disabled because you don't have any token left in your account.
             </div>
         );
@@ -70,16 +70,18 @@ const DepositToken: FunctionComponent = () => {
                     min="1"
                     max={tokenBalance}
                     placeholder={`from 1 to ${getTokenBalanceFixed()}`}
-                    onChange={updateDepositAmount} />
+                    onChange={updateDepositAmount}
+                    data-test="DepositToken__Input__depositAmount" />
                 <button
                     className="bg-green-600 hover:bg-green-400 text-white font-medium py-2 px-4 disabled:opacity-75"
                     onClick={handleDeposit}
                     disabled={!isValidAmount}
+                    data-test="DepositToken__Button__deposit"
                 >
                     Deposit
                 </button>
             </div>
-            <div className="text-rose-400">
+            <div className="text-rose-400" data-test="DepositToken__Div__error">
                 {error}
             </div>
         </>
